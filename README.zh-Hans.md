@@ -25,7 +25,7 @@
 
 ## 📄 许可证
 
-本项目基于 [GNU 许可证](LICENSE) 开源。
+本项目基于 [GPL-3.0](LICENSE) 开源。
 
 ## 🙏 致谢
 
@@ -40,4 +40,3 @@
 - [Vercel](https://vercel.com)
 - [iconify](https://iconify.design/)
 - [Awesome-Merge-Picture](https://github.com/XiCheng148/Awesome-Merge-Picture)
-

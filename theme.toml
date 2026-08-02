@@ -1,5 +1,5 @@
 name = "Hugo Narrow"
-license = "MIT"
+license = "GPL-3.0"
 licenselink = "https://github.com/tom2almighty/hugo-narrow/blob/main/LICENSE"
 description = "A modern, clean, and minimal Hugo theme built with Tailwind CSS 4.0. Support custom themes, dark mode, and responsive design."
 homepage = "https://github.com/tom2almighty/hugo-narrow"
