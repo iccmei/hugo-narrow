@@ -7,11 +7,10 @@ const TOC_SPACE_WIDE = 13; // 留白足够放下面板
 const TOC_SPACE_TIGHT = 2; // 留白仅够放下竖条
 const TOC_MIN_VIEWPORT = 64; // 小于该视口宽度一律使用居中形态
 
-// 竖条分段的 flex-grow 权重：标题层级越深，段越短
+// 竖条分段的权重：标题层级越深，段越短。
+// 收起态用作 flex-grow（各段按权重分摊被压缩的高度），
+// 展开态用作段高倍数（见 assets/css/toc.css）
 const TOC_SEGMENT_WEIGHT = { 1: 3, 2: 2, 3: 1.5 };
-
-// 竖条最多显示的段数：竖条只是位置提示，标题过多时铺满整屏反而影响观感
-const TOC_RAIL_MAX = 12;
 
 function tocHashOf(link) {
   const raw = link.hash ? link.hash.substring(1) : "";
@@ -32,7 +31,6 @@ class TOCManager {
     this.headings = [];
     this.tocLinks = [];
     this.entries = [];
-    this.railTargets = null;
     this.activeParam = null;
     this.initialized = false;
 
@@ -51,6 +49,7 @@ class TOCManager {
       this.setupSpaceTracking();
       this.buildRail();
       this.updateRail();
+      this.setupScrollSync();
       this.syncPin();
     }
 
@@ -153,54 +152,16 @@ class TOCManager {
 
   /* ---------------- Side 模式：分段竖条 ---------------- */
 
-  /**
-   * 挑选参与竖条渲染的标题：超过上限时先逐级丢弃更深的层级（保住层级结构），
-   * 只剩最浅一级仍然超限时等距抽样。
-   */
-  selectRailEntries() {
-    if (this.entries.length <= TOC_RAIL_MAX) return this.entries.slice();
-
-    const depths = this.entries.map((entry) => entry.depth);
-    const minDepth = Math.min(...depths);
-    const maxDepth = Math.max(...depths);
-
-    for (let limit = maxDepth; limit > minDepth; limit--) {
-      const kept = this.entries.filter((entry) => entry.depth < limit);
-      if (kept.length <= TOC_RAIL_MAX) return kept;
-    }
-
-    const shallow = this.entries.filter((entry) => entry.depth === minDepth);
-    const step = shallow.length / TOC_RAIL_MAX;
-    return Array.from({ length: TOC_RAIL_MAX }, (_, i) => shallow[Math.floor(i * step)]);
-  }
-
-  // 被丢弃的标题激活时，高亮它前面最近的那一段，避免竖条毫无反馈
-  buildRailTargets(railEntries) {
-    const railIds = new Set(railEntries.map((entry) => entry.id));
-    const targets = new Map();
-    let current = railEntries.length ? railEntries[0].id : "";
-
-    this.entries.forEach(({ id }) => {
-      if (railIds.has(id)) current = id;
-      targets.set(id, current);
-    });
-
-    return targets;
-  }
-
   buildRail() {
     if (!this.rail) return;
     // 强行清理已存 DOM 避免重复渲染（特别是由 PJAX/Turbo 机制等造成的重复）
     this.rail.innerHTML = "";
 
-    const railEntries = this.selectRailEntries();
-    this.railTargets = this.buildRailTargets(railEntries);
-
-    railEntries.forEach(({ link, id, depth }) => {
+    this.entries.forEach(({ link, id, depth }) => {
       const segment = document.createElement("span");
       segment.className = "toc-seg";
       segment.dataset.target = id;
-      segment.style.flexGrow = String(TOC_SEGMENT_WEIGHT[depth] || 1);
+      segment.style.setProperty("--toc-seg-weight", String(TOC_SEGMENT_WEIGHT[depth] || 1));
 
       segment.addEventListener("click", (e) => {
         // 触控设备不支持 hover，此时点击竖条不应触发滚动，而是交给父级去触发展开面板的逻辑
@@ -212,16 +173,53 @@ class TOCManager {
       this.rail.appendChild(segment);
     });
 
-    // 竖条高度随标题数量增长，超出可用高度后各段按权重压缩
-    this.rail.style.setProperty("--toc-seg-count", String(railEntries.length));
+    // 收起态竖条高度随标题数量增长，达到上限后各段按权重压缩
+    this.rail.style.setProperty("--toc-seg-count", String(this.entries.length));
   }
 
   updateRail() {
     if (!this.rail) return;
-    const active = this.railTargets ? this.railTargets.get(this.activeParam) : this.activeParam;
     this.rail.querySelectorAll(".toc-seg").forEach((segment) => {
-      segment.classList.toggle("is-active", Boolean(active) && segment.dataset.target === active);
+      segment.classList.toggle("is-active", segment.dataset.target === this.activeParam);
     });
+  }
+
+  /* ---------------- Side 模式：竖条与面板同步滚动 ---------------- */
+
+  // 两者行高不同，按滚动进度比例映射；写入时上锁，避免互相触发形成回环
+  setupScrollSync() {
+    if (!this.rail || !this.panel) return;
+    let syncing = false;
+
+    const sync = (from, to) => {
+      if (syncing) return;
+      const fromMax = from.scrollHeight - from.clientHeight;
+      const toMax = to.scrollHeight - to.clientHeight;
+      if (fromMax <= 0 || toMax <= 0) return;
+
+      syncing = true;
+      to.scrollTop = (from.scrollTop / fromMax) * toMax;
+      requestAnimationFrame(() => {
+        syncing = false;
+      });
+    };
+
+    this.panel.addEventListener("scroll", () => sync(this.panel, this.rail), { passive: true });
+    this.rail.addEventListener("scroll", () => sync(this.rail, this.panel), { passive: true });
+  }
+
+  // 展开时把当前标题带进可视区域，否则长目录每次都从头开始
+  revealActive() {
+    if (!this.panel || !this.activeParam) return;
+    const entry = this.entries.find(({ id }) => id === this.activeParam);
+    if (!entry) return;
+
+    const link = entry.link;
+    const max = this.panel.scrollHeight - this.panel.clientHeight;
+    if (max <= 0) return;
+
+    const centered = link.offsetTop + link.offsetHeight / 2 - this.panel.clientHeight / 2;
+    this.panel.scrollTop = Math.min(Math.max(centered, 0), max);
   }
 
   /* ---------------- Side 模式：可用留白探测 ---------------- */
@@ -273,6 +271,8 @@ class TOCManager {
     const expanded = open ? "true" : "false";
     if (this.rail) this.rail.setAttribute("aria-expanded", expanded);
     if (this.sideToggle) this.sideToggle.setAttribute("aria-expanded", expanded);
+    // 展开后竖条与面板才有滚动范围，此时定位到当前标题
+    if (open) requestAnimationFrame(() => this.revealActive());
   }
 
   toggleSide() {
@@ -298,7 +298,10 @@ class TOCManager {
       }
     }
     // 常显由属性驱动，清掉 hover 展开态避免两者叠加
-    if (pinned) this.setOpen(false);
+    if (pinned) {
+      this.setOpen(false);
+      requestAnimationFrame(() => this.revealActive());
+    }
   }
 
   syncPin() {

@@ -50,7 +50,10 @@ html[data-toc-space] #toc-layer {
   pointer-events: auto;
 }
 
-/* --- 分段竖条：每个标题一段，段高按标题层级递减（flex-grow 由 JS 设置） --- */
+/* --- 分段竖条：每个标题一段，段高按标题层级递减 ---
+   收起态：全部标题都有一段，整体高度受上限约束，标题多时各段按权重压缩变短；
+   展开态（hover 或常显）：各段恢复本来的高度，超出可用高度后竖条自身滚动，
+   并与面板做同步滚动（见 assets/js/toc.js 的 setupScrollSync）。 */
 
 #toc-rail {
   --toc-seg-count: 1;
@@ -58,17 +61,23 @@ html[data-toc-space] #toc-layer {
   top: 0;
   left: 0;
   display: flex;
-  height: min(calc(var(--toc-seg-count) * 1.5rem), calc(100dvh - var(--toc-top) - 8rem));
+  height: min(
+    calc(var(--toc-seg-count) * 1.5rem),
+    24rem,
+    calc(100dvh - var(--toc-top) - 8rem)
+  );
   cursor: pointer;
   flex-direction: column;
   align-items: flex-start;
   gap: 3px;
+  overflow: hidden;
   padding-inline: 0.5rem;
   transition: opacity 0.25s ease;
 }
 
 .toc-seg {
   flex: 0 1 0;
+  flex-grow: var(--toc-seg-weight, 1);
   width: 3px;
   min-height: 2px;
   max-height: 1.5rem;
@@ -77,6 +86,22 @@ html[data-toc-space] #toc-layer {
   transition:
     background-color 0.2s ease,
     width 0.2s ease;
+}
+
+/* 展开态：竖条不再隐藏或压缩，恢复高度并可滚动 */
+#toc-container[data-open="true"] #toc-rail,
+html[data-toc-pinned="true"][data-toc-space="wide"] #toc-rail {
+  height: auto;
+  max-height: calc(100dvh - var(--toc-top) - 8rem);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+#toc-container[data-open="true"] .toc-seg,
+html[data-toc-pinned="true"][data-toc-space="wide"] .toc-seg {
+  flex: 0 0 auto;
+  height: calc(var(--toc-seg-weight, 1) * 0.5rem);
+  max-height: none;
 }
 
 #toc-rail:hover .toc-seg {
@@ -99,6 +124,7 @@ html[data-toc-space] #toc-layer {
   width: clamp(11rem, calc(var(--toc-gutter, 18rem) - 1.5rem), 18rem);
   max-height: calc(100dvh - var(--toc-top) - 6rem);
   opacity: 0;
+  overscroll-behavior: contain;
   pointer-events: none;
   translate: -0.5rem 0;
   transition:
@@ -118,16 +144,7 @@ html[data-toc-pinned="true"][data-toc-space="wide"] #toc-panel {
   translate: 0 0;
 }
 
-/* 常显时竖条的提示作用已消失，隐藏并让面板贴紧容器 */
-html[data-toc-pinned="true"][data-toc-space="wide"] #toc-rail {
-  opacity: 0;
-  pointer-events: none;
-}
-
-html[data-toc-pinned="true"][data-toc-space="wide"] #toc-panel {
-  left: 0.75rem;
-  width: clamp(11rem, calc(var(--toc-gutter, 18rem) - 1.25rem), 18rem);
-}
+/* 常显时竖条要跟着面板一起留下，两者同步滚动，因此不再隐藏也不再挪动面板 */
 
 /* --- tight：留白只够竖条，面板向左浮出覆盖正文 --- */
 
