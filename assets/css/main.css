@@ -43,8 +43,11 @@
 
 @layer components {
   @import "./components.css";
+  @import "./gallery.css";
+  @import "./toc.css";
 }
 
 @layer utilities {
   @import "./custom.css";
 }
+

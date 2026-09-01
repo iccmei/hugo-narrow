@@ -4,6 +4,7 @@
 
 A Modern Hugo Theme with Multiple Color Schemes - Built on TailwindCSS 4.
 
+**[Documentation](https://tom2almighty.github.io/hugo-narrow-docs)** · **[Demo](https://tom2almighty.github.io/hugo-narrow)** · **[中文](README.zh-Hans.md)**
 
 ## ✨ Features
 
@@ -19,38 +20,23 @@ A Modern Hugo Theme with Multiple Color Schemes - Built on TailwindCSS 4.
 - Multilingual Support
 - Katex Support
 - Mermaid Support
-- Lightbox by PhotoSwipe
+- Lightbox
 - Justified/Masonry/Grid Gallery with markdown
-
-## 📕 Documentation
-
-Please visit [Hugo Narrow Docs](https://hugo-narrow-docs.vercel.app/) get full documentation.
-
-## 🔗 Demo
-
-This demo site is hosted by Vercel, click to visit [Demo](https://hugo-narrow.vercel.app/).
-
 
 ## 📄 License
 
-This project is open source under the [MIT License](LICENSE).
+This project is open source under the [GPL-3.0](LICENSE).
 
 ## 🙏 Acknowledgments
 
-- [Hugo](https://gohugo.io/) - Static site generator.
-- [Tailwind CSS](https://tailwindcss.com/) - CSS framework.
-- [KaTeX](https://katex.org/) - Math formula rendering.
-- [Mermaid](https://mermaid.js.org/) - Chart library.
-- [Daisyui](https://daisyui.com/) - Color Scheme reference.
-- [Tweakcn](https://tweakcn.com/) - Color Scheme reference.
-- [Hexo Theme icarus](https://github.com/ppoffice/hexo-theme-icarus) - Search functionality reference.
-- [Hugo Theme Stack](https://stack.jimmycai.com/) - Bilibili and Tencent Video shortcodes.
-- [Vercel](https://vercel.com) - Demo Site.
-- [iconify](https://iconify.design/) - Get icons here, thanks to all open source icon sets.
-- [PhotoSwipe](https://photoswipe.com/) - Lightbox library.
-- [Augment Code](https://www.augmentcode.com/) - Programming assistant.
-- [Awesome-Merge-Picture](https://github.com/XiCheng148/Awesome-Merge-Picture) - Screen Making.
-
----
-
-⭐ If this theme helps you, please give it a Star!
+- [Hugo](https://gohugo.io/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [KaTeX](https://katex.org/)
+- [Mermaid](https://mermaid.js.org/)
+- [Daisyui](https://daisyui.com/)
+- [Tweakcn](https://tweakcn.com/)
+- [Hexo Theme icarus](https://github.com/ppoffice/hexo-theme-icarus)
+- [Hugo Theme Stack](https://stack.jimmycai.com/)
+- [Vercel](https://vercel.com)
+- [iconify](https://iconify.design/)
+- [Awesome-Merge-Picture](https://github.com/XiCheng148/Awesome-Merge-Picture)

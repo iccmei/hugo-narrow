@@ -61,11 +61,11 @@
   backdrop-filter: blur(1px);
 }
 
-.collapse-overlay > div {
+.collapse-overlay-btn {
   transition: transform 0.2s ease;
 }
 
-.collapse-overlay:hover > div {
+.collapse-overlay:hover .collapse-overlay-btn {
   transform: translateX(-50%) scale(1.05);
 }
 

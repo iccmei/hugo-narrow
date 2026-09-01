@@ -1,8 +1,9 @@
-{{- $tocConfig := dict "enabled" false "position" "center" -}}
+{{- $tocConfig := dict "enabled" false "position" "center" "pinned" false -}}
 
 {{- if .IsPage -}}
   {{- $globalEnabled := true -}}
   {{- $globalPosition := "center" -}}
+  {{- $globalPinned := false -}}
 
   {{- $globalToc := .Site.Params.toc | default dict -}}
   {{- if isset $globalToc "enabled" -}}
@@ -11,9 +12,13 @@
   {{- if isset $globalToc "position" -}}
     {{- $globalPosition = $globalToc.position -}}
   {{- end -}}
+  {{- if isset $globalToc "pinned" -}}
+    {{- $globalPinned = $globalToc.pinned -}}
+  {{- end -}}
 
   {{- $pageEnabled := $globalEnabled -}}
   {{- $pagePosition := $globalPosition -}}
+  {{- $pagePinned := $globalPinned -}}
 
   {{- if isset .Params "toc" -}}
     {{- if reflect.IsMap .Params.toc -}}
@@ -23,12 +28,18 @@
       {{- if isset .Params.toc "position" -}}
         {{- $pagePosition = .Params.toc.position -}}
       {{- end -}}
+      {{- if isset .Params.toc "pinned" -}}
+        {{- $pagePinned = .Params.toc.pinned -}}
+      {{- end -}}
     {{- else -}}
       {{- $pageEnabled = .Params.toc -}}
     {{- end -}}
   {{- end -}}
 
-  {{- $tocConfig = dict "enabled" $pageEnabled "position" $pagePosition -}}
+  {{/* pinned 只对 side 模式有意义 */}}
+  {{- $resolvedPinned := and $pageEnabled $pagePinned (eq $pagePosition "side") -}}
+
+  {{- $tocConfig = dict "enabled" $pageEnabled "position" $pagePosition "pinned" $resolvedPinned -}}
 {{- end -}}
 
 {{- return $tocConfig -}}

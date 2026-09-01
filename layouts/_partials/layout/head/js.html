@@ -6,13 +6,14 @@
   }}
   {{- with . | js.Build $opts }}
     {{- if hugo.IsDevelopment }}
-      <script src="{{ .RelPermalink }}"></script>
+      <script src="{{ .RelPermalink }}" defer></script>
     {{- else }}
       {{- with . | fingerprint }}
         <script
           src="{{ .RelPermalink }}"
           integrity="{{ .Data.Integrity }}"
           crossorigin="anonymous"
+          defer
         ></script>
       {{- end }}
     {{- end }}
@@ -20,7 +21,7 @@
 {{- end }}
 
 
-<!-- 目录功能脚本 - 只在文章页面且 TOC 启用时加载，需要在 dock.js 之前加载 -->
+<!-- 目录功能脚本 - 只在文章页面 TOC 启用时加载，需要在 dock.js 之前加载 -->
 {{- if .IsPage }}
   {{- $tocConfig := partial "config/toc.html" . }}
   {{- if $tocConfig.enabled }}
@@ -98,16 +99,10 @@
 
 {{/* Gallery JavaScript */}}
 {{ if .Scratch.Get "galleryEnabled" }}
-  <script src="/js/smart-gallery.min.js"></script>
-{{ end }}
-
-{{ if .Scratch.Get "lightboxEnabled" }}
-  <script type="module">
-    import PhotoSwipeLightbox from "/js/photoswipe-lightbox.esm.min.js";
-    import PhotoSwipe from "/js/photoswipe.esm.min.js";
-    window.PhotoSwipeLightbox = PhotoSwipeLightbox;
-    window.PhotoSwipe = PhotoSwipe;
-  </script>
+  <script
+    src="https://cdn.jsdelivr.net/npm/smart-gallery@latest/dist/smart-gallery.umd.js"
+    defer
+  ></script>
 {{ end }}
 
 {{ if or (.Scratch.Get "galleryEnabled") (.Scratch.Get "lightboxEnabled") }}

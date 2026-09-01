@@ -208,56 +208,23 @@
   }
 
   // 评论按钮 - 只在文章页面且评论启用时存在
+  // 主题的评论区由统一的 #comments 容器包裹，直接定位即可，无需匹配各评论系统的元素
   const commentsBtn = document.getElementById("dock-comments");
   if (commentsBtn) {
     commentsBtn.addEventListener("click", function (e) {
       e.preventDefault();
 
-      // 实现滚动到评论区域功能
-      try {
-        // 尝试多种可能的评论区域选择器
-        const commentSelectors = [
-          "#comments", // 通用评论区域 ID
-          ".comments", // 通用评论区域类
-          "#giscus-container", // Giscus 评论系统
-          ".giscus", // Giscus 评论系统类
-          "#disqus_thread", // Disqus 评论系统
-          ".disqus", // Disqus 评论系统类
-          "#utterances", // Utterances 评论系统
-          ".utterances", // Utterances 评论系统类
-          "#waline", // Waline 评论系统
-          ".waline", // Waline 评论系统类
-          "[data-comments]", // 带有 data-comments 属性的元素
-          ".comment-section", // 评论区域类
-          ".post-comments", // 文章评论类
-        ];
+      const commentElement = document.getElementById("comments");
 
-        let commentElement = null;
-
-        // 按优先级查找评论元素
-        for (const selector of commentSelectors) {
-          commentElement = document.querySelector(selector);
-          if (commentElement) {
-            break;
-          }
-        }
-
-        if (commentElement) {
-          // 平滑滚动到评论区域
-          commentElement.scrollIntoView({
-            behavior: "smooth",
-            block: "start",
-            inline: "nearest",
-          });
-        } else {
-          // 如果找不到评论区域，滚动到页面底部
-          window.scrollTo({
-            top: document.documentElement.scrollHeight,
-            behavior: "smooth",
-          });
-        }
-      } catch (error) {
-        // 出错时滚动到页面底部
+      if (commentElement) {
+        // 平滑滚动到评论区域
+        commentElement.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+          inline: "nearest",
+        });
+      } else {
+        // 找不到评论区时回退到页面底部
         window.scrollTo({
           top: document.documentElement.scrollHeight,
           behavior: "smooth",
