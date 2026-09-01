@@ -55,6 +55,9 @@
     dockBackToTop = "Наверх"
     dockTop       = "Вверх"
     toc           = "Оглавление"
+    tocPin        = "Закрепить оглавление"
+    tocUnpin      = "Открепить оглавление"
+    tocClose      = "Закрыть оглавление"
 
     searchClear        = "Очистить"
     searchPlaceholder  = "Поиск по статьям..."

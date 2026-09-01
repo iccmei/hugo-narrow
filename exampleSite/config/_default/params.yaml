@@ -53,7 +53,8 @@ contentWidth: "56rem"
 # TOC (Table of Contents)
 toc:
   enabled: true # Enable or disable TOC globally
-  position: "center" # Options: center | side
+  position: "side" # Options: center | side
+  pinned: false # Side mode only: keep the TOC panel always visible when there is enough space
 
 # Default color scheme
 colorScheme: "default"

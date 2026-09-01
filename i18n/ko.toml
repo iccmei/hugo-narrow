@@ -46,6 +46,9 @@
     dockBackToTop = "맨 위로"
     dockTop       = "맨 위"
     toc           = "목차"
+    tocPin        = "목차 고정"
+    tocUnpin      = "목차 고정 해제"
+    tocClose      = "목차 닫기"
 
     searchClear        = "지우기"
     searchPlaceholder  = "게시물 검색..."

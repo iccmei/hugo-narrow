@@ -49,6 +49,9 @@
     dockBackToTop = "Voltar ao topo"
     dockTop       = "Topo"
     toc           = "Sumário"
+    tocPin        = "Fixar sumário"
+    tocUnpin      = "Desafixar sumário"
+    tocClose      = "Fechar sumário"
 
     searchClear        = "Limpar"
     searchPlaceholder  = "Pesquisar artigos..."

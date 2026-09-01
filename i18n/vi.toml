@@ -46,6 +46,9 @@
     dockBackToTop = "Lên đầu trang"
     dockTop       = "Đầu trang"
     toc           = "Mục lục"
+    tocPin        = "Ghim mục lục"
+    tocUnpin      = "Bỏ ghim mục lục"
+    tocClose      = "Đóng mục lục"
 
     searchClear        = "Xóa"
     searchPlaceholder  = "Tìm bài viết..."

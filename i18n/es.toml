@@ -49,6 +49,9 @@
     dockBackToTop = "Volver arriba"
     dockTop       = "Arriba"
     toc           = "Tabla de contenidos"
+    tocPin        = "Fijar tabla de contenidos"
+    tocUnpin      = "Dejar de fijar la tabla de contenidos"
+    tocClose      = "Cerrar tabla de contenidos"
 
     searchClear        = "Borrar"
     searchPlaceholder  = "Buscar artículos..."

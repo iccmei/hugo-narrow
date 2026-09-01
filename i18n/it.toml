@@ -49,6 +49,9 @@
     dockBackToTop = "Torna su"
     dockTop       = "In alto"
     toc           = "Indice"
+    tocPin        = "Fissa l'indice"
+    tocUnpin      = "Sblocca l'indice"
+    tocClose      = "Chiudi l'indice"
 
     searchClear        = "Cancella"
     searchPlaceholder  = "Cerca articoli..."

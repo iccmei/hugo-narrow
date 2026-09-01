@@ -46,6 +46,9 @@
     dockBackToTop = "返回頂部"
     dockTop       = "頂部"
     toc           = "目錄"
+    tocPin        = "固定目錄"
+    tocUnpin      = "取消固定目錄"
+    tocClose      = "關閉目錄"
 
     searchClear        = "清空"
     searchPlaceholder  = "搜尋文章..."

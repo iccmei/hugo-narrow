@@ -1,7 +1,10 @@
 <!doctype html>
+{{- $tocConfig := partial "config/toc.html" . -}}
+{{- $tocPinned := cond $tocConfig.pinned "true" "false" -}}
 <html
   lang="{{ site.Language.Locale }}"
   data-theme="{{ site.Params.colorScheme | default `default` }}"
+  data-toc-pinned="{{ $tocPinned }}"
 >
   <head>
     {{ partial "layout/head.html" . }}
@@ -10,7 +13,7 @@
   </head>
 
   {{- $contentWidth := .Site.Params.contentWidth | default `56rem` -}}
-  {{- $mainStyleAttr := printf `style="max-width: var(--content-width, %s)"` $contentWidth -}}
+  {{- $mainStyleAttr := printf `style="--content-width-base: %s; max-width: var(--content-width, var(--content-width-base))"` $contentWidth -}}
 
 
   <body class="bg-background text-foreground min-h-screen antialiased">

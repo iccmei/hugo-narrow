@@ -46,6 +46,9 @@
     dockBackToTop = "トップへ戻る"
     dockTop       = "トップ"
     toc           = "目次"
+    tocPin        = "目次を固定"
+    tocUnpin      = "目次の固定を解除"
+    tocClose      = "目次を閉じる"
 
     searchClear        = "クリア"
     searchPlaceholder  = "記事を検索..."

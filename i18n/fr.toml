@@ -49,6 +49,9 @@
     dockBackToTop = "Haut de page"
     dockTop       = "Haut"
     toc           = "Table des matières"
+    tocPin        = "Épingler la table des matières"
+    tocUnpin      = "Détacher la table des matières"
+    tocClose      = "Fermer la table des matières"
 
     searchClear        = "Effacer"
     searchPlaceholder  = "Rechercher des articles..."

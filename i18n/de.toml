@@ -49,6 +49,9 @@
     dockBackToTop = "Nach oben"
     dockTop       = "Oben"
     toc           = "Inhaltsverzeichnis"
+    tocPin        = "Inhaltsverzeichnis anpinnen"
+    tocUnpin      = "Inhaltsverzeichnis lösen"
+    tocClose      = "Inhaltsverzeichnis schließen"
 
     searchClear        = "Löschen"
     searchPlaceholder  = "Beiträge durchsuchen..."

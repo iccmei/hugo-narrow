@@ -61,6 +61,9 @@
     dockBackToTop = "العودة للأعلى"
     dockTop       = "أعلى"
     toc           = "جدول المحتويات"
+    tocPin        = "تثبيت جدول المحتويات"
+    tocUnpin      = "إلغاء تثبيت جدول المحتويات"
+    tocClose      = "إغلاق جدول المحتويات"
 
     searchClear        = "مسح"
     searchPlaceholder  = "ابحث في المقالات..."

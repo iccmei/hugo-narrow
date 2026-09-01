@@ -49,6 +49,9 @@
     dockBackToTop = "Back to top"
     dockTop       = "Top"
     toc           = "Table of contents"
+    tocPin        = "Pin table of contents"
+    tocUnpin      = "Unpin table of contents"
+    tocClose      = "Close table of contents"
 
     searchClear        = "Clear"
     searchPlaceholder  = "Search posts..."
