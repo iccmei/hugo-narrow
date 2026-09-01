@@ -274,8 +274,11 @@
   transform: scale(1);
 }
 
-/* 链接样式 */
-.prose p > a {
+/* 链接样式
+   作用于正文里所有位置的链接（段落、列表、表格、标题内、行内强调内等）。
+   排除两类：自带专属样式的功能性链接（标题锚点、脚注跳转），
+   以及 .not-prose 标记的自绘组件（按钮短代码、链接卡片、图片 figure）。 */
+.prose a:not(.heading-anchor, .footnote-ref, .footnote-backref, .not-prose, .not-prose a) {
   color: var(--tw-prose-links);
   text-decoration: underline;
   text-decoration-color: var(--tw-prose-links);
@@ -284,7 +287,7 @@
   transition: all 0.3s ease;
 }
 
-.prose p > a:hover {
+.prose a:not(.heading-anchor, .footnote-ref, .footnote-backref, .not-prose, .not-prose a):hover {
   color: var(--color-primary);
   text-decoration-color: transparent;
   background: color-mix(in srgb, var(--color-primary) 10%, transparent);

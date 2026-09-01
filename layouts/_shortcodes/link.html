@@ -7,8 +7,8 @@
 {{- $category := .Get "category" -}}
 {{- $group := .Get "group" -}}
 
-{{- /* 所有情况都使用统一的容器 */ -}}
-<div class="link-card-group">
+{{- /* 所有情况都使用统一的容器；not-prose 让卡片内的整块点击链接不受正文链接样式影响 */ -}}
+<div class="link-card-group not-prose">
   {{- /* 方式1: 直接传参 */ -}}
   {{- if and $title $url -}}
     {{ partial "content/link.html" (dict
